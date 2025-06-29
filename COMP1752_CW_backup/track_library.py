@@ -30,12 +30,26 @@ def get_artist(key):
     except KeyError:
         return None
 
+def get_rating(key):
+    try:
+        item = library[key]
+        return item.rating
+    except KeyError:
+        return -1
+
 def set_rating(key, rating):
     try:
         item = library[key]
         item.rating = rating
     except KeyError:
         return
+
+def get_play_count(key):
+    try:
+        item = library[key]
+        return item.play_count
+    except KeyError:
+        return -1
 
 def increment_play_count(key):
     try:

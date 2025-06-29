@@ -8,12 +8,20 @@ def view_tracks_clicked(input, output):
     """
 
     output.delete(1.0, tk.END)
-    track_key = input.get()
+    key = input.get()
 
-    track_name = lib.get_name(track_key)
-    track_artist = lib.get_artist(track_key)
+    song_name = lib.get_name(key)
+    artist = lib.get_artist(key)
+    rating = lib.get_rating(key)
+    play_count = lib.get_play_count(key)
+    track_details = f"{song_name}\n{artist}\nRating: {rating}\nPlays: {play_count}"
 
-    if track_name and track_artist:
-        output.insert(tk.END, f"Track Name: {track_name}\nArtist: {track_artist}")
+    if song_name and artist:
+        output.insert(tk.END, track_details)
     else:
         output(tk.END, "Track not found.")
+
+def list_tracks_clicked(output):
+    output.delete(1.0, tk.END)
+    all_tracks = lib.list_all()
+    output.insert(tk.END, all_tracks)

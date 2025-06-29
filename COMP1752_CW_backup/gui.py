@@ -1,6 +1,7 @@
 import tkinter as tk
-import tkinter.scrolledtext as tkst # Import the scrolledtext module
+import tkinter.scrolledtext as tkst # Import the scrolled text module
 import font_manager as fonts
+import view_tracks as vt
 
 window = tk.Tk()
 window.title("Jukebox")
@@ -58,7 +59,7 @@ top_left_frame.grid_columnconfigure(1, weight=0)
 list_tracks_label = tk.Label(top_left_frame,text="List Tracks", font=label_style["font"], fg=label_style["fg"], bg=label_style["bg"])
 list_tracks_label.grid(row=0, column=0, sticky="w")
 
-list_tracks_button = tk.Button(top_left_frame, text="List All Tracks", font=button_style["font"], fg=button_style["fg"], bg=button_style["bg"])
+list_tracks_button = tk.Button(top_left_frame, text="List All Tracks", font=button_style["font"], fg=button_style["fg"], bg=button_style["bg"], command=lambda: vt.list_tracks_clicked(list_tracks_text))
 list_tracks_button.grid(row=0, column=1, sticky="e", padx=5)
 
 # --- Change 1: Listbox for List Tracks to ScrolledText ---
@@ -83,7 +84,7 @@ view_track_entry = tk.Entry(bottom_left_frame, width= 10, font=entry_style["font
 view_track_entry.grid(row=0, column=1, sticky="w", padx=5)
 
 # View Track Button
-view_track_button = tk.Button(bottom_left_frame, text="View Track", font=button_style["font"], fg=button_style["fg"], bg=button_style["bg"])
+view_track_button = tk.Button(bottom_left_frame, text="View Track", font=button_style["font"], fg=button_style["fg"], bg=button_style["bg"], command=lambda: vt.view_tracks_clicked(view_track_entry, view_track_text))
 view_track_button.grid(row=0, column=2, sticky="e", padx=5)
 
 # --- Change 2: Listbox for View Track to ScrolledText ---
