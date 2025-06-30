@@ -18,14 +18,14 @@ def get_styles():
     return {
         "title": {
             "font": ("Arial", 24, "bold"),
-            "fg": "blue",
-            "bg": "light green"
+            "fg": "black",
+            "bg": "#73de82"
         },
 
         "label": {
             "font": ("Arial", 14, "bold"),
             "fg": "black",
-            "bg": "light pink"
+            "bg": "light blue"
         },
 
         "button": {
