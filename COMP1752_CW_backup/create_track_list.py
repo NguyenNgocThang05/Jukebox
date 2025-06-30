@@ -21,14 +21,14 @@ def create_track_list_clicked(input, output):
             track_name = lib.get_name(inputted_number)
             track_artist = lib.get_artist(inputted_number)
             track_rating = lib.get_rating(inputted_number)
-            display_text += f"- {track_name} - {track_artist} - Rating: {track_rating}"
+            display_text += f"- {track_name} - {track_artist} - Rating: {track_rating}\n"
         output.insert(tk.END, display_text)
     else:
         output.insert(tk.END, f"Error: Track number '{track_number}' is not valid.")
 
 
 def play_track_list(output):
-    output.delete(1.0, tk.END)
+    # output.delete(1.0, tk.END)
 
     if not current_playlist:
         output.insert(tk.END, "Playlist is empty. Add tracks first.")
