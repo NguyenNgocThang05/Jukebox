@@ -44,6 +44,12 @@ def get_styles():
             "font": ("Arial", 12),
             "fg": "dark red",
             "bg": "beige"
+        },
+
+        "status": {
+            "font": ("Arial", 12),
+            "fg": "black",
+            "bg": "#c5f0c5"
         }
     }
 

@@ -2,7 +2,8 @@ import tkinter as tk
 import tkinter.scrolledtext as tkst  # Import the scrolled text module
 import font_manager as fonts
 import view_tracks as vt
-import create_track_list # Import the create_track_list module
+import create_track_list as ctl
+import status_message as status
 
 window = tk.Tk()
 window.title("Jukebox")
@@ -16,6 +17,7 @@ label_style = styles["label"]
 button_style = styles["button"]
 entry_style = styles["entry"]
 text_style = styles["text"]
+status_style = styles["status"]
 
 # === Main Frame using grid for consistency ===
 main_frame = tk.Frame(window)
@@ -31,8 +33,22 @@ main_frame.grid_rowconfigure(1, weight=1)
 main_frame.grid_columnconfigure(0, weight=1)
 main_frame.grid_columnconfigure(1, weight=1)
 
+# === Status Label ===
+status_label = tk.Label(main_frame,
+                        text="",
+                        font=status_style["font"],
+                        fg=status_style["fg"],
+                        bg=status_style["bg"])
+status_label.grid(row=2, column=0, columnspan=2, sticky="ew", padx=10, pady=10)
+# Initialize the StatusManager with status label
+status.StatusManager.set_label_widget(status_label)
+
 # === Title Label ===
-title_label = tk.Label(main_frame, text="Welcome to Jukebox!", font=title_style["font"], fg=title_style["fg"], bg=title_style["bg"])
+title_label = tk.Label(main_frame,
+                       text="Welcome to Jukebox!",
+                       font=title_style["font"],
+                       fg=title_style["fg"],
+                       bg=title_style["bg"])
 title_label.grid(row=0, column=0, columnspan=2, sticky="ew")
 
 # === Left Frame ===
@@ -57,10 +73,19 @@ top_left_frame.grid_columnconfigure(0, weight=1)
 top_left_frame.grid_columnconfigure(1, weight=0)
 
 # List Tracks: Label and Button placed in same row
-list_tracks_label = tk.Label(top_left_frame,text="List Tracks", font=label_style["font"], fg=label_style["fg"], bg=label_style["bg"])
+list_tracks_label = tk.Label(top_left_frame,
+                             text="List Tracks",
+                             font=label_style["font"],
+                             fg=label_style["fg"],
+                             bg=label_style["bg"])
 list_tracks_label.grid(row=0, column=0, sticky="w")
 
-list_tracks_button = tk.Button(top_left_frame, text="List All Tracks", font=button_style["font"], fg=button_style["fg"], bg=button_style["bg"], command=lambda: vt.list_tracks_clicked(list_tracks_text))
+list_tracks_button = tk.Button(top_left_frame,
+                               text="List All Tracks",
+                               font=button_style["font"],
+                               fg=button_style["fg"],
+                               bg=button_style["bg"],
+                               command=lambda: vt.list_tracks_clicked(list_tracks_text))
 list_tracks_button.grid(row=0, column=1, sticky="e", padx=5)
 
 # --- Change 1: Listbox for List Tracks to ScrolledText ---
@@ -77,7 +102,11 @@ bottom_left_frame.grid(row=2, column=0, sticky="ew", padx=5, pady=5)
 bottom_left_frame.grid_columnconfigure(1, weight=1)
 
 # View Track Label
-view_track_label = tk.Label(bottom_left_frame, text="Enter track number:", font=label_style["font"], fg=label_style["fg"], bg=label_style["bg"])
+view_track_label = tk.Label(bottom_left_frame,
+                            text="Enter track number:",
+                            font=label_style["font"],
+                            fg=label_style["fg"],
+                            bg=label_style["bg"])
 view_track_label.grid(row=0, column=0, sticky="w", padx=5)
 
 # View Track Entry Field
@@ -85,7 +114,12 @@ view_track_entry = tk.Entry(bottom_left_frame, width= 10, font=entry_style["font
 view_track_entry.grid(row=0, column=1, sticky="w", padx=5)
 
 # View Track Button
-view_track_button = tk.Button(bottom_left_frame, text="View Track", font=button_style["font"], fg=button_style["fg"], bg=button_style["bg"], command=lambda: vt.view_tracks_clicked(view_track_entry, view_track_text))
+view_track_button = tk.Button(bottom_left_frame,
+                              text="View Track",
+                              font=button_style["font"],
+                              fg=button_style["fg"],
+                              bg=button_style["bg"],
+                              command=lambda: vt.view_tracks_clicked(view_track_entry, view_track_text))
 view_track_button.grid(row=0, column=2, sticky="e", padx=5)
 
 # --- Change 2: Listbox for View Track to ScrolledText ---
@@ -102,15 +136,28 @@ top_right_frame.grid(row=0, column=0, sticky="ew", padx=5, pady=5)
 top_right_frame.grid_columnconfigure(0, weight=1) # Allow column 0 to expand
 
 # Create Track List: Label and Button placed in same row
-create_track_label = tk.Label(top_right_frame, text="Create Track List", font=label_style["font"], fg=label_style["fg"], bg=label_style["bg"])
+create_track_label = tk.Label(top_right_frame,
+                              text="Create Track List",
+                              font=label_style["font"],
+                              fg=label_style["fg"],
+                              bg=label_style["bg"])
 create_track_label.grid(row=0, column=0, sticky="w")
 
 # Modified: Added command to create_track_button
-create_track_button = tk.Button(top_right_frame, text="Create", font=button_style["font"], fg=button_style["fg"], bg=button_style["bg"], command=lambda: create_track_list.create_track_list_clicked(track_number_entry, create_track_text))
+create_track_button = tk.Button(top_right_frame,
+                                text="Create",
+                                font=button_style["font"],
+                                fg=button_style["fg"],
+                                bg=button_style["bg"],
+                                command=lambda: ctl.create_track_list_clicked(track_number_entry, create_track_text))
 create_track_button.grid(row=0, column=1, sticky="e", padx=5)
 
 # Create Track List: Enter Track Number Entry Field placed in same row
-track_number_label = tk.Label(top_right_frame, text="Enter track number:", font=label_style["font"], fg=label_style["fg"], bg=label_style["bg"])
+track_number_label = tk.Label(top_right_frame,
+                              text="Enter track number:",
+                              font=label_style["font"],
+                              fg=label_style["fg"],
+                              bg=label_style["bg"])
 track_number_label.grid(row=1, column=0, sticky="w")
 
 track_number_entry = tk.Entry(top_right_frame, width=10)
@@ -121,15 +168,29 @@ track_number_entry.grid(row=1, column=1, sticky="w", padx=5)
 your_tracks_frame = tk.Frame(top_right_frame, bg="light blue")
 your_tracks_frame.grid(row=2, column=0, columnspan=2, sticky="w") # Spanning two columns and sticking to west
 
-your_tracks_label = tk.Label(your_tracks_frame, text="Your Track List:", font=label_style["font"], fg=label_style["fg"], bg=label_style["bg"])
+your_tracks_label = tk.Label(your_tracks_frame,
+                             text="Your Track List:",
+                             font=label_style["font"],
+                             fg=label_style["fg"],
+                             bg=label_style["bg"])
 your_tracks_label.grid(row=0, column=0, sticky="w")
 
 # Modified: Added command to play_button
-play_button = tk.Button(your_tracks_frame, text="Play", font=button_style["font"], fg=button_style["fg"], bg=button_style["bg"], command=lambda: create_track_list.play_track_list(create_track_text))
+play_button = tk.Button(your_tracks_frame,
+                        text="Play",
+                        font=button_style["font"],
+                        fg=button_style["fg"],
+                        bg=button_style["bg"],
+                        command=lambda: ctl.play_track_list())
 play_button.grid(row=0, column=1, sticky="w", padx=5) # Stick to west with padding
 
 # Modified: Added command to reset_button
-reset_button = tk.Button(your_tracks_frame, text="Reset", font=button_style["font"], fg=button_style["fg"], bg=button_style["bg"], command=lambda: create_track_list.reset_playlist(create_track_text))
+reset_button = tk.Button(your_tracks_frame,
+                         text="Reset",
+                         font=button_style["font"],
+                         fg=button_style["fg"],
+                         bg=button_style["bg"],
+                         command=lambda: ctl.reset_playlist(create_track_text))
 reset_button.grid(row=0, column=2, sticky="w", padx=5) # Stick to west with padding
 # -----------------------------------------------------------------------------
 
@@ -146,26 +207,41 @@ bottom_right_frame = tk.Frame(right_frame, bg="light blue")
 bottom_right_frame.grid(row=2, column=0, sticky="ew", padx=5, pady=5)
 
 # Update Tracks: Label and Button placed in same row
-update_tracks_label = tk.Label(bottom_right_frame, text="Update Tracks", font=label_style["font"], fg=label_style["fg"], bg=label_style["bg"])
+update_tracks_label = tk.Label(bottom_right_frame,
+                               text="Update Tracks",
+                               font=label_style["font"],
+                               fg=label_style["fg"],
+                               bg=label_style["bg"])
 update_tracks_label.grid(row=0, column=0, sticky="w")
 
-update_tracks_button = tk.Button(bottom_right_frame, text="Update", font=button_style["font"], fg=button_style["fg"], bg=button_style["bg"])
+update_tracks_button = tk.Button(bottom_right_frame,
+                                 text="Update",
+                                 font=button_style["font"],
+                                 fg=button_style["fg"],
+                                 bg=button_style["bg"])
 update_tracks_button.grid(row=0, column=1, sticky="e", padx=5)
 
 # Update Tracks: 'Enter track number' Label and Entry Field placed in same row
-update_entry_label = tk.Label(bottom_right_frame, text="Enter track number:", font=label_style["font"], fg=label_style["fg"], bg=label_style["bg"])
+update_entry_label = tk.Label(bottom_right_frame,
+                              text="Enter track number:",
+                              font=label_style["font"],
+                              fg=label_style["fg"],
+                              bg=label_style["bg"])
 update_entry_label.grid(row=1, column=0, sticky="w")
 
 update_entry = tk.Entry(bottom_right_frame, width=10)
 update_entry.grid(row=1, column=1, sticky="W", padx=5)
 
 # Update Tracks: New Rating's Label and Entry Field placed in same row
-new_rating_label = tk.Label(bottom_right_frame, text="New Rating:", font=label_style["font"], fg=label_style["fg"], bg=label_style["bg"])
+new_rating_label = tk.Label(bottom_right_frame,
+                            text="New Rating:",
+                            font=label_style["font"],
+                            fg=label_style["fg"],
+                            bg=label_style["bg"])
 new_rating_label.grid(row=2, column=0, sticky="w")
 
 new_rating_entry = tk.Entry(bottom_right_frame, width=10)
 new_rating_entry.grid(row=2, column=1, sticky="w", padx=5)
-
 
 # Start the GUI event loop
 window.mainloop()
