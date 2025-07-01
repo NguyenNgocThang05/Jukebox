@@ -17,39 +17,39 @@ def get_styles():
     """
     return {
         "title": {
-            "font": ("Arial", 24, "bold"),
-            "fg": "black",
-            "bg": "#73de82"
+            "font": ("Segoe UI", 24, "bold"),
+            "fg": "white",
+            "bg": "#000000"
         },
 
         "label": {
-            "font": ("Arial", 14, "bold"),
-            "fg": "black",
-            "bg": "light blue"
+            "font": ("Segoe UI", 13, "normal"),
+            "fg": "#424242",
+            "bg": "#DCEDC8"
         },
 
         "button": {
-            "font": ("Arial", 12, "bold"),
+            "font": ("Segoe UI", 11, "normal"),
             "fg": "white",
-            "bg": "green"
+            "bg": "#1A73E8"
         },
 
         "entry": {
-            "font": ("Arial", 12),
-            "fg": "black",
-            "bg": "white"
+            "font": ("Arial", 11, "normal"),
+            "fg": "212121",
+            "bg": "#1976D2"
         },
 
         "text": {
-            "font": ("Arial", 12),
-            "fg": "dark red",
-            "bg": "beige"
+            "font": ("Segoe UI", 11, "normal"),
+            "fg": "#212121",
+            "bg": "white"
         },
 
         "status": {
-            "font": ("Arial", 12),
-            "fg": "black",
-            "bg": "#c5f0c5"
+            "font": ("Segoe UI", 9, "italic"),
+            "fg": "#E0E0E0",
+            "bg": "white"
         }
     }
 
