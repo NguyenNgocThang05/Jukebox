@@ -3,32 +3,31 @@ import font_manager as fonts
 import track_library as lib
 
 class UpdateTracks:
-    def __init__(self, parent):
-        self.tab3_interface(parent)
+    def __init__(self, window):
+        window.geometry("630x250")
+        window.title("Update Tracks")
 
-    def tab3_interface(self, frame):
-
-        update_lbl = tk.Label(frame, text="Enter Track Number")
+        update_lbl = tk.Label(window, text="Enter Track Number")
         update_lbl.grid(row=0 ,column=0, padx=10, pady=10)
 
-        self.input_txt = tk.Entry(frame, width=3)
+        self.input_txt = tk.Entry(window, width=3)
         self.input_txt.grid(row=0, column=1, padx=10, pady=10)
 
-        enter_btn = tk.Button(frame, text="Enter", command=self.show_track_info)
+        enter_btn = tk.Button(window, text="Enter", command=self.show_track_info)
         enter_btn.grid(row=0, column=2, padx=10, pady=10)
 
 
-        self.list_txt = tk.Listbox(frame, width=30, height=2, bg="white")
+        self.list_txt = tk.Listbox(window, width=30, height=2, bg="white")
         self.list_txt.grid(row=1, column=0,padx=10, pady=10)
 
-        update_btn = tk.Button(frame, text="Update", command=self.update_track_clicked)
+        update_btn = tk.Button(window, text="Update", command=self.update_track_clicked)
         update_btn.grid(row=1, column=1, padx=10, pady=10)
 
-        option_lbl = tk.Label(frame, text="Choose a new rating:")
+        option_lbl = tk.Label(window, text="Choose a new rating:")
         option_lbl.grid(row=2, column=0)
 
         # Frame to hold radio buttons
-        radio_frame = tk.Frame(frame)
+        radio_frame = tk.Frame(window)
         radio_frame.grid(row=3, column=0, columnspan=3, pady=10)
 
         self.selected_option = tk.StringVar(value="1")
@@ -48,7 +47,7 @@ class UpdateTracks:
         radio_btn5 = tk.Radiobutton(radio_frame, text="5", variable=self.selected_option, value="5")
         radio_btn5.grid(row=0, column=4, padx=5)
 
-        self.status_lbl = tk.Label(frame, text="", font=("Helvetica", 10))
+        self.status_lbl = tk.Label(window, text="", font=("Helvetica", 10))
         self.status_lbl.grid(row=4, column=0, columnspan=4, sticky="w", padx=10, pady=10)
 
     def show_track_info(self):
