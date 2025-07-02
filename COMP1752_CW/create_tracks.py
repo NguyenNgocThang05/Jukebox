@@ -1,14 +1,8 @@
 import tkinter as tk
 import tkinter.scrolledtext as tkst
 
-
 import  track_library as lib
 import font_manager as fonts
-
-def set_text(text_area, content):
-    text_area.delete("1.0", tk.END)
-    text_area.insert(1.0, content)
-
 
 class CreateTracks():
     def __init__(self, window):
@@ -44,7 +38,7 @@ class CreateTracks():
         self.status_lbl.grid(row=2, column=0, columnspan=4, sticky="w", padx=10, pady=10)
 
     def create_tracks_clicked(self):
-        key = self.input_txt.get()
+        key = self.input_txt.get().strip()
         if key:
             if lib.get_name(key) is not None:
                 self.playlist.append(key)

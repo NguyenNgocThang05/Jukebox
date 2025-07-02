@@ -40,7 +40,7 @@ class TrackViewer():
         # self.list_tracks_clicked()
 
     def view_tracks_clicked(self):
-        key = self.input_txt.get()
+        key = self.input_txt.get().strip()
         name = lib.get_name(key)
         if name is not None:
             artist = lib.get_artist(key)
