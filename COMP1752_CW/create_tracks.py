@@ -17,7 +17,7 @@ class CreateTracks():
         self.input_txt = tk.Entry(window, width=3)
         self.input_txt.grid(row=0, column=1, padx=10, pady=10)
 
-        create_tracks_btn = tk.Button(window, text="Create", command=self.create_tracks_clicked)
+        create_tracks_btn = tk.Button(window, text="Add", command=self.create_tracks_clicked)
         create_tracks_btn.grid(row=0, column=2, padx=10, pady=10)
 
         self.list_txt = tkst.ScrolledText(window, width=48, height=12, wrap="none")
