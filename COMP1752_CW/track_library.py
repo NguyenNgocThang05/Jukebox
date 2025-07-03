@@ -101,7 +101,7 @@ def update_library():
     with open(file_name, 'w', newline="") as csvfile:
         """
         Opens the file in write mode ('w')
-        "newline=" is used to prevent extra bland rows in the CSV file
+        "newline=" is used to prevent extra blank rows in the CSV file
         The "with" statement makes sure that the file is closed even if error occur
         """
         csv_writer = csv.writer(csvfile) # Creates a CSV writer object used to write rows to the CSV file
@@ -115,47 +115,58 @@ def update_library():
             """
             fixed_trackID = "%02d" % trackID # Formatting fixed_trackID as two-digit string (1 becomes 01, if it's 10 it will stay as 10)
             csv_writer.writerow([
-                library[fixed_trackID].name,
-                library[fixed_trackID].artist,
-                library[fixed_trackID].rating,
-                library[fixed_trackID].play_count
+                # Writes a row to the CSV file
+                library[fixed_trackID].name, # The name of the track
+                library[fixed_trackID].artist, # The artist of the track
+                library[fixed_trackID].rating, # The rating of the track
+                library[fixed_trackID].play_count # The play count of the track
             ])
 
 # Read the library from a CSV file
 def read_library():
-    global library
-    library = {}  # Initialize empty dictionary
+    """
+    Defines a function named "read_library" that reads library item (track) details from a CSV file and
+    populates the library dictionary
+    """
+    global library # Declares that the "library" variable being used inside this function is the global "library" dictionary,
+                   # allowing the function to modify it
+    library = {}  # Initialize the global "library" dictionary as an empty string
 
     with open("track_details.csv", newline="") as csvfile:
-        csv_reader = csv.reader(csvfile)
-        next(csv_reader) # Skip the header row
+        # Open the track_details.csv file in read mode
+        csv_reader = csv.reader(csvfile) # Creates a CSV reader object to iterate over rows in the CSV file
+        next(csv_reader) # Skip the header row, assuming it's a header row
 
-        trackID = 1
+        trackID = 1 # Initialize a counter for assigning track IDs
         for details in csv_reader:
+            # Loops through each remaining row (list of strings) in the CSV file
             try:
-                rating = int(details[2]) # Convert rating to integer
+                rating = int(details[2]) # Tries to convert the third element of the row (index 2, which is the rating) to an integer
                 # Validates rating within valid range from 0 to 5
-                if rating < 1:
-                    rating = 1
-                elif rating > 5:
-                    rating = 5
+                if rating < 1: # If the rating is less than 1
+                    rating = 1 # Set it to 1
+                elif rating > 5: # If the rating is greater than 5
+                    rating = 5 # Set it to 5
             except ValueError:
+                # If the conversion to integer fails
                 rating = 1 # Default rating to 0 if invalid
 
             try:
-                play_count = int(details[3]) # Convert play count to integer
+                play_count = int(details[3]) # Tries to convert the fourth element of the row (index 3, which is play count) to an integer
             except ValueError:
+                # If the conversion to integer fails
                 play_count = 0 # Default play count to 0 if invalid
 
-            fixed_trackID = "%02d" % trackID     # Formatting track ID as two digit string
-            library[fixed_trackID] = LibraryItem(details[0], details[1], rating)
-            library[fixed_trackID].play_count = play_count
-            trackID += 1
+            fixed_trackID = "%02d" % trackID     # Formatting track ID as two digit string (Ex: 1 becomes 01 and 10 is still 10)
+            library[fixed_trackID] = LibraryItem(details[0], details[1], rating) # Creates a new LibraryItem object
+                                                                                 # This new object is then added to the "library" dictionary with "fixed_trackID" as its key
+            library[fixed_trackID].play_count = play_count # Sets the "play_count" attribute of the newly created LibraryItem object
+            trackID += 1 # Increments the "trackID" for the next track
 
-        return library
+        return library # Returns the library dictionary
 
 
-library = read_library()
+library = read_library() # Calls the read_library function immediately when the program runs
 
 if __name__ == "__main__":
     read_library()
