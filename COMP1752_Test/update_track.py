@@ -88,7 +88,9 @@ class UpdateTracks:
 
             lib.set_rating(key, rating_value)
             self.status_lbl.configure(text=f"Track {key} rating updated to {rating_value} star(s)")
-            lib.set_rating(key, rating_value)
+
+            # Save updated rating to CSV file
+            lib.update_library()
 
             self.show_track_info()
 

@@ -15,9 +15,9 @@ fonts.configure()
 notebook = ttk.Notebook(window)
 notebook.pack(expand=True, fill="both")
 
-tab1 = tk.Frame(notebook)
-tab2 = tk.Frame(notebook)
-tab3 = tk.Frame(notebook)
+tab1 = tk.Frame(notebook, bg="#121212")
+tab2 = tk.Frame(notebook, bg="#121212")
+tab3 = tk.Frame(notebook, bg="#121212")
 
 notebook.add(tab1, text="View Tracks")
 notebook.add(tab2, text="Create Playlist")

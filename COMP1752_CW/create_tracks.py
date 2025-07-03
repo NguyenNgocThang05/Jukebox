@@ -12,30 +12,30 @@ class CreateTracks:
 
         self.playlist = []
 
-        enter_lbl = tk.Label(frame, text="Enter Track Number")
+        enter_lbl = tk.Label(frame, text="Enter Track Number", bg="#515151", fg="white")
         enter_lbl.grid(row=0 ,column=0, padx=10, pady=10)
 
         self.input_txt = tk.Entry(frame, width=3)
         self.input_txt.grid(row=0, column=1, padx=10, pady=10)
 
-        create_tracks_btn = tk.Button(frame, text="Add", command=self.create_tracks_clicked)
+        create_tracks_btn = tk.Button(frame, text="Add",bg="#515151", fg="white", command=self.create_tracks_clicked)
         create_tracks_btn.grid(row=0, column=2, padx=10, pady=10)
 
-        self.list_txt = tkst.ScrolledText(frame, width=48, height=12, wrap="none")
+        self.list_txt = tkst.ScrolledText(frame,bg="#515151", fg="white", width=48, height=12, wrap="none")
         self.list_txt.grid(row=1, column=0, columnspan=2, sticky="w", padx=10, pady=10)
 
         # Frame to stack Play and Reset button together in row=1, column=2
-        button_frame = tk.Frame(frame)
+        button_frame = tk.Frame(frame, bg="#121212")
         button_frame.grid(row=1, column=2, padx=(0, 10), pady=(10, 10), sticky="n")
 
-        self.play_btn = tk.Button(button_frame, text="Play", command=self.play_track_list)
+        self.play_btn = tk.Button(button_frame, text="Play",bg="#515151", fg="white", command=self.play_track_list)
         self.play_btn.grid(row=0, column=0, pady=(0, 2))
 
-        self.reset_btn = tk.Button(button_frame, text="Reset", command=self.reset_playlist)
+        self.reset_btn = tk.Button(button_frame, text="Reset",bg="#515151", fg="white", command=self.reset_playlist)
         self.reset_btn.grid(row=1, column=0, pady=(0, 0))
 
 
-        self.status_lbl = tk.Label(frame, text="", font=("Helvetica", 10))
+        self.status_lbl = tk.Label(frame, text="",bg="#121212", fg="white")
         self.status_lbl.grid(row=2, column=0, columnspan=4, sticky="w", padx=10, pady=10)
 
     def create_tracks_clicked(self):
@@ -61,7 +61,7 @@ class CreateTracks:
         for i, key in enumerate(self.playlist):
             name = lib.get_name(key)
             if name:
-                display_text += f"{i+1}. {name}\n"
+                display_text += f"{i+1}. {name} - From track {key}\n"
         self.list_txt.insert(1.0, display_text)
 
 
@@ -85,4 +85,3 @@ if __name__ == "__main__":
     fonts.configure()
     CreateTracks(window)
     window.mainloop()
-

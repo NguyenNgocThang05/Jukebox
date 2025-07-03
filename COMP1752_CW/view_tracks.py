@@ -16,25 +16,25 @@ class TrackViewer:
 
     def tab1_interface(self, frame):
 
-        list_tracks_btn = tk.Button(frame, text="List All Tracks", command=self.list_tracks_clicked)
+        list_tracks_btn = tk.Button(frame, text="List All Tracks",bg="#515151", fg="white", command=self.list_tracks_clicked)
         list_tracks_btn.grid(row=0, column=0, padx=10, pady=10)
 
-        enter_lbl = tk.Label(frame, text="Enter Track Number")
+        enter_lbl = tk.Label(frame, text="Enter Track Number",bg="#515151", fg="white")
         enter_lbl.grid(row=0, column=1, padx=10, pady=10)
 
         self.input_txt = tk.Entry(frame, width=3)
         self.input_txt.grid(row=0, column=2, padx=10, pady=10)
 
-        check_track_btn = tk.Button(frame, text="View Track", command=self.view_tracks_clicked)
+        check_track_btn = tk.Button(frame, text="View Track",bg="#515151", fg="white", command=self.view_tracks_clicked)
         check_track_btn.grid(row=0, column=3, padx=10, pady=10)
 
-        self.list_txt = tkst.ScrolledText(frame, width=48, height=12, wrap="none")
+        self.list_txt = tkst.ScrolledText(frame,bg="#515151", fg="white", width=48, height=12, wrap="none")
         self.list_txt.grid(row=1, column=0, columnspan=3, sticky="W", padx=10, pady=10)
 
-        self.track_txt = tk.Text(frame, width=24, height=4, wrap="none")
+        self.track_txt = tk.Text(frame,bg="#515151", fg="white", width=24, height=4, wrap="none")
         self.track_txt.grid(row=1, column=3, sticky="NW", padx=10, pady=10)
 
-        self.status_lbl = tk.Label(frame, text="", font=("Helvetica", 10))
+        self.status_lbl = tk.Label(frame, text="", bg="#121212", fg="white")
         self.status_lbl.grid(row=2, column=0, columnspan=4, sticky="W", padx=10, pady=10)
 
         # self.list_tracks_clicked()

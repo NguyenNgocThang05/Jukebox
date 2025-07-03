@@ -72,6 +72,9 @@ class CreateTracks:
 
         for key in self.playlist:
             lib.increment_play_count(key)
+
+        # Save updated play counts to the CSV file
+        lib.update_library()
         self.status_lbl.configure(text="Playlist is now playing")
 
 

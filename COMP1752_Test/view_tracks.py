@@ -13,6 +13,7 @@ def set_text(text_area, content):
 class TrackViewer:
     def __init__(self, parent):
         self.tab1_interface(parent)
+        self.list_tracks_clicked()
 
     def tab1_interface(self, frame):
 
@@ -37,7 +38,7 @@ class TrackViewer:
         self.status_lbl = tk.Label(frame, text="", font=("Helvetica", 10))
         self.status_lbl.grid(row=2, column=0, columnspan=4, sticky="W", padx=10, pady=10)
 
-        # self.list_tracks_clicked()
+
 
     def view_tracks_clicked(self):
         key = self.input_txt.get().strip()
