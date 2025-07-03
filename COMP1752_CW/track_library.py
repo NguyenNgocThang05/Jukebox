@@ -3,76 +3,122 @@ from library_item import LibraryItem
 
 
 def list_all():
-    output = ""
-    for key in library:
-        item = library[key]
-        output += f"{key} {item.info()}\n"
+    """
+    Defines a function named "list_all" that lists all tracks in the library
+    """
+    output = "" # Initialize an empty string to store the output
+    for key in library: # Loops through each key in the library dictionary
+        item = library[key] # Retrieves the LibraryItem object with the current key from the library dictionary
+        output += f"{key} {item.info()}\n" # Appends a string to "output".
     return output
 
 
 def get_name(key):
+    """
+    Defines a function named "get_name" that attempts to return the name of a track given its key
+    """
     try:
-        item = library[key]
-        return item.name
+        # Initialize a try block to handle errors
+        item = library[key] # Tries to retrieve the LibraryItem object using the provided key
+        return item.name # If success, returns the "name" attribute of the retrieved item
     except KeyError:
-        return None
+        # If the key doesn't exist in the library a KeyError will occure
+        return None # Returns None to tell that the track was not found
 
 
 def get_artist(key):
+    """
+    Defines a function named "get_artist" that attempts to retrieve the artist of the track given its key
+    """
     try:
-        item = library[key]
-        return item.artist
+        # Initialize a try block to handle errors
+        item = library[key] # Tries to retrieve the LibraryItem object using its given key
+        return item.artist # If success, returns the "artist" attribute of the retrieved item
     except KeyError:
-        return None
+        # If a KeyError occurs
+        return None # Returns None
 
 
 def get_rating(key):
+    """
+    Defines a function named "get_rating" that attempts to retrieve the rating of a track given its key
+    """
     try:
-        item = library[key]
-        return item.rating
+        # Initialize a try block to handle errors
+        item = library[key] # Tries to retrieve the LibraryObject using its given key
+        return item.rating # If success, returns the "rating" attribute of the item
     except KeyError:
-        return -1
+        # If a KeyError occurs
+        return -1 # Returns -1 to tell that the track was not found or has no rating
 
 
 def set_rating(key, rating):
+    """
+    Defines a function named "set_rating" that attempts to set the rating of a track
+    """
     try:
-        item = library[key]
-        item.rating = rating
+        # Initialize a try block to handle errors
+        item = library[key] # Tries to retrieve the LibraryItem Object
+        item.rating = rating # If success, sets the "rating" attribute of the item to the provided "rating" value parameter
     except KeyError:
-        return
+        # If a KeyError occurs
+        return # The function returns without doing anything
 
 
 def get_play_count(key):
+    """
+    Defines a function named "get_play_count" that attempts to retrieve the play count of a track
+    """
     try:
-        item = library[key]
-        return item.play_count
+        # Initialize a try block to handle errors
+        item = library[key] # Tries to retrieve the LibraryItem object
+        return item.play_count # If success, returns the "play_count" attribute of the item
     except KeyError:
-        return -1
+        # If a KeyError occurs
+        return -1 # Returns -1 to tell that the track was not found
 
 
 def increment_play_count(key):
+    """
+    Defines a function named "increment_play_count" that attempts to increase the play count of a track
+    """
     try:
-        item = library[key]
-        item.play_count += 1
+        # Initialize a try block to handle errors
+        item = library[key] # Tries to retrieve the LibraryItem object
+        item.play_count += 1 # If success, increments the "play_count" attribute of the item by 1
     except KeyError:
-        return
+        # If a KeyError occurs
+        return # The function returns without doing anything
 
 
 # Update library to CSV file
 def update_library():
-    file_name = "track_details.csv"
+    """
+    Defines a function named "update_library" that writes the current state of the "library" dictionary to a CSV file
+    """
+    file_name = "track_details.csv" # Sets the name of the CSV file to "track_details.csv"
 
     with open(file_name, 'w', newline="") as csvfile:
-        csv_writer = csv.writer(csvfile)
-        csv_writer.writerow(["Name", "Artist", "Rating", "Play Count"]) # Write header row
+        """
+        Opens the file in write mode ('w')
+        "newline=" is used to prevent extra bland rows in the CSV file
+        The "with" statement makes sure that the file is closed even if error occur
+        """
+        csv_writer = csv.writer(csvfile) # Creates a CSV writer object used to write rows to the CSV file
+        csv_writer.writerow(["Name", "Artist", "Rating", "Play Count"]) # Write header row to CSV file
 
-        for i in range(1, len(library) + 1):
-            key = "%02d" % i # Formatting key as two-digit string
+        for trackID in range(1, len(library) + 1):
+            """
+            Loops from 1 up to total number of tracks in the "library"
+            The reason why it starts from 1 and the total of track increment plus 1
+            Because we do not want the user to see the ID track of 00
+            """
+            fixed_trackID = "%02d" % trackID # Formatting fixed_trackID as two-digit string (1 becomes 01, if it's 10 it will stay as 10)
             csv_writer.writerow([
-                library[key].name,
-                library[key].artist,
-                library[key].rating,
-                library[key].play_count
+                library[fixed_trackID].name,
+                library[fixed_trackID].artist,
+                library[fixed_trackID].rating,
+                library[fixed_trackID].play_count
             ])
 
 # Read the library from a CSV file
