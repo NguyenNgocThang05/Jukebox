@@ -25,7 +25,7 @@ def set_text(text_area, content):
 
 class TrackViewer:
     """
-    Defines a class named "TrackViewer", white creates the GUI elements and logic for view tracks
+    Defines a class named "TrackViewer", which creates the GUI elements and logic for view tracks
     """
     def __init__(self, parent):
         """
