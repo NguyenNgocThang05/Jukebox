@@ -1,30 +1,23 @@
-import tkinter as tk
-from tkinter import ttk
-import font_manager as fonts
-
+import customtkinter as ctk
 from view_tracks import TrackViewer
-from create_tracks import CreateTracks
+from create_playlist import CreatePlaylist
 from update_track import UpdateTracks
+import theme_manager as theme
+theme.configure()
 
-window = tk.Tk()
+window = ctk.CTk()
 window.title("Jukebox")
-window.geometry("800x400")
+window.geometry("800x410")
 
-fonts.configure()
-
-notebook = ttk.Notebook(window)
+notebook = ctk.CTkTabview(window)
 notebook.pack(expand=True, fill="both")
 
-tab1 = tk.Frame(notebook)
-tab2 = tk.Frame(notebook)
-tab3 = tk.Frame(notebook)
-
-notebook.add(tab1, text="View Tracks")
-notebook.add(tab2, text="Create Playlist")
-notebook.add(tab3, text="Update Tracks")
+tab1 = notebook.add("View Tracks")
+tab2 = notebook.add("Create Playlist")
+tab3 = notebook.add("Update Tracks")
 
 TrackViewer(tab1)
-CreateTracks(tab2)
+CreatePlaylist(tab2)
 UpdateTracks(tab3)
 
 window.mainloop()

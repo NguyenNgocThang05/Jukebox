@@ -1,105 +1,86 @@
-import tkinter as tk
-import font_manager as fonts
+import customtkinter as ctk
 import track_library as lib
+import theme_manager as theme
+
 
 class UpdateTracks:
     def __init__(self, parent):
-        self.tab3_interface(parent)
+        self.parent = parent
+        self.input_txt = None
+        self.track_display = None
+        self.selected_option = None
+        self.status_lbl = None
+        self.create_widgets()
 
-    def tab3_interface(self, frame):
+    def create_widgets(self):
+        # Track number input
+        track_label = ctk.CTkLabel(self.parent, text="Enter track number:")
+        track_label.grid(row=0, column=0, padx=5, pady=5)
 
-        update_lbl = tk.Label(frame, text="Enter Track Number")
-        update_lbl.grid(row=0 ,column=0, padx=10, pady=10)
+        self.input_txt = ctk.CTkEntry(self.parent, width=50)
+        self.input_txt.grid(row=0, column=1, padx=5, pady=5)
 
-        self.input_txt = tk.Entry(frame, width=3)
-        self.input_txt.grid(row=0, column=1, padx=10, pady=10)
+        find_btn = ctk.CTkButton(self.parent, text="Find", command=self.show_track_info, width=60, corner_radius=5)
+        find_btn.grid(row=0, column=2, padx=5, pady=5)
 
-        enter_btn = tk.Button(frame, text="Enter", command=self.show_track_info)
-        enter_btn.grid(row=0, column=2, padx=10, pady=10)
+        # Track info display
+        self.track_display = ctk.CTkTextbox(self.parent, width=200, height=30, corner_radius=5, state="disabled")
+        self.track_display.grid(row=1, column=0, columnspan=2, padx=5, pady=5, sticky="w")
 
+        update_btn = ctk.CTkButton(self.parent, text="Update", command=self.update_track_clicked, width=80, corner_radius=5)
+        update_btn.grid(row=1, column=2, padx=5, pady=5)
 
-        self.list_txt = tk.Listbox(frame, width=30, height=2, bg="white")
-        self.list_txt.grid(row=1, column=0,padx=10, pady=10)
+        # Rating selection
+        rating_label = ctk.CTkLabel(self.parent, text="New Rating:")
+        rating_label.grid(row=2, column=0, padx=5, pady=5)
 
-        update_btn = tk.Button(frame, text="Update", command=self.update_track_clicked)
-        update_btn.grid(row=1, column=1, padx=10, pady=10)
+        self.selected_option = ctk.StringVar(value="1")
+        for i in range(5):
+            ctk.CTkRadioButton(self.parent, text=str(i + 1), variable=self.selected_option, value=str(i + 1)).grid(
+                row=2, column=i + 1, padx=2, pady=5)
 
-        option_lbl = tk.Label(frame, text="Choose a new rating:")
-        option_lbl.grid(row=2, column=0)
-
-        # Frame to hold radio buttons
-        radio_frame = tk.Frame(frame)
-        radio_frame.grid(row=3, column=0, columnspan=3, pady=10)
-
-        self.selected_option = tk.StringVar(value="1")
-
-        radio_btn1 = tk.Radiobutton(radio_frame, text="1", variable=self.selected_option, value="1")
-        radio_btn1.grid(row=0, column=0, padx=5)
-
-        radio_btn2 = tk.Radiobutton(radio_frame, text="2", variable=self.selected_option, value="2")
-        radio_btn2.grid(row=0, column=1, padx=5)
-
-        radio_btn3 = tk.Radiobutton(radio_frame, text="3", variable=self.selected_option, value="3")
-        radio_btn3.grid(row=0, column=2, padx=5)
-
-        radio_btn4 = tk.Radiobutton(radio_frame, text="4", variable=self.selected_option, value="4")
-        radio_btn4.grid(row=0, column=3, padx=5)
-
-        radio_btn5 = tk.Radiobutton(radio_frame, text="5", variable=self.selected_option, value="5")
-        radio_btn5.grid(row=0, column=4, padx=5)
-
-        self.status_lbl = tk.Label(frame, text="", font=("Helvetica", 10))
-        self.status_lbl.grid(row=4, column=0, columnspan=4, sticky="w", padx=10, pady=10)
+        # Status message
+        self.status_lbl = ctk.CTkLabel(self.parent, text="", height=20)
+        self.status_lbl.grid(row=3, column=0, columnspan=6, sticky="w", padx=5, pady=5)
 
     def show_track_info(self):
         key = self.input_txt.get().strip()
-        self.list_txt.delete(0, tk.END)
-
         if not key:
             self.status_lbl.configure(text="Please enter a track number")
             return
 
+        self.track_display.configure(state="normal")
+        self.track_display.delete("1.0", ctk.END)
+
         name = lib.get_name(key)
+        display_text = f"{key}: {name}" if name else f"Track {key} not found"
+        self.track_display.insert("1.0", display_text)
 
-        if name:
-            self.list_txt.insert(tk.END, f"Track {key}: {name}")
-        else:
-            self.status_lbl.configure(text=f"Track {key} not found")
-
+        self.track_display.configure(state="disabled")
 
     def update_track_clicked(self):
         key = self.input_txt.get().strip()
-        new_rating = self.selected_option.get()
-        name = lib.get_name(key)
-
         if not key:
             self.status_lbl.configure(text="Please enter a track number")
-            return 
+            return
 
-        if name is None:
-            self.status_lbl.configure(text=f"Error: Track {key} not found")
+        name = lib.get_name(key)
+        if not name:
+            self.status_lbl.configure(text=f"Track {key} not found")
             return
 
         try:
-            rating_value = int(new_rating)
-            if not (1 <= rating_value <= 5):
-                self.status_lbl.configure(text="Error: Rating must be between 1 and 5")
-                return
-
-            lib.set_rating(key, rating_value)
-            self.status_lbl.configure(text=f"Track {key} rating updated to {rating_value} star(s)")
-
-            # Save updated rating to CSV file
+            new_rating = int(self.selected_option.get())
+            lib.set_rating(key, new_rating)
             lib.update_library()
-
+            self.status_lbl.configure(text=f"Updated {name} to {new_rating} stars")
             self.show_track_info()
-
         except ValueError:
-            self.status_lbl.configure(text="Error: Invalid rating value")
+            self.status_lbl.configure(text="Invalid rating value")
 
 
 if __name__ == "__main__":
-    window = tk.Tk()
-    fonts.configure()
+    window = ctk.CTk()
+    theme.configure()
     UpdateTracks(window)
     window.mainloop()

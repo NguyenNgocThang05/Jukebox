@@ -77,7 +77,7 @@ class TrackViewer:
         Defines a method that is called when the "View Track" button is clicked
         """
         key = self.input_txt.get().strip() # Retrieves the text entered from the user
-        name = lib.get_name(key) # Calls the "get_name" functon to get the track's name using entered key
+        name = lib.get_name(key) # Calls the "get_name" function to get the track's name using entered key
         if name is not None:
             # Checks if a track with the given key was found
             artist = lib.get_artist(key) # Retrieves the artist of the track

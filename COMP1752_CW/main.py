@@ -1,10 +1,10 @@
-import tkinter as tk
-from tkinter import ttk
-import font_manager as fonts
+import tkinter as tk # Import tkinter and tk as a new alias
+from tkinter import ttk # Import another module from tkinter called ttk to create tabs
+import font_manager as fonts # Import font_manager and fonts as a new alias
 
-from view_tracks import TrackViewer
-from create_tracks import CreateTracks
-from update_track import UpdateTracks
+from view_tracks import TrackViewer # Import TrackViewer Class to connect the components
+from create_tracks import CreateTracks # Import CreateTracks Class to connect the components
+from update_track import UpdateTracks # Import UpdateTracks Class to connect the components
 
 window = tk.Tk() # Creates a main Tkinter window for the app
 window.title("Jukebox") # Title of the main window
