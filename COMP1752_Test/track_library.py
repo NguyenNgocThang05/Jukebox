@@ -36,6 +36,13 @@ def get_rating(key):
 
 def set_rating(key, rating):
     try:
+        rating = int(rating)
+
+        if rating < 1:
+            rating = 1
+        elif rating > 5:
+            rating = 5
+
         item = library[key]
         item.rating = rating
     except KeyError:
