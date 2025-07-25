@@ -46,7 +46,7 @@ class CreatePlaylist:
         self.reset_btn = ctk.CTkButton(button_frame, text="Reset", command=self.reset_playlist, corner_radius=10)
         self.reset_btn.pack(pady=5)
 
-        # Status bar
+        # Status label
         self.status_lbl = ctk.CTkLabel(self.parent, text="")
         self.status_lbl.grid(row=2, column=0, columnspan=4, sticky="w", padx=5, pady=5)
 

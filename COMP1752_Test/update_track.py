@@ -47,7 +47,7 @@ class UpdateTracks:
             ctk.CTkRadioButton(self.parent, text=str(i + 1), variable=self.selected_option, value=str(i + 1)).grid(
                 row=2, column=i + 1, padx=2, pady=5)
 
-        # Status message
+        # Status label
         self.status_lbl = ctk.CTkLabel(self.parent, text="", height=20)
         self.status_lbl.grid(row=3, column=0, columnspan=6, sticky="w", padx=5, pady=5)
 

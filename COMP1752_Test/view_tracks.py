@@ -41,7 +41,7 @@ class TrackViewer:
         self.track_txt = ctk.CTkTextbox(self.parent, width=240, height=100, state="disabled")
         self.track_txt.grid(row=1, column=3, sticky="nw", padx=5, pady=5)
 
-        # Status bar
+        # Status label
         self.status_lbl = ctk.CTkLabel(self.parent, text="")
         self.status_lbl.grid(row=2, column=0, columnspan=4, sticky="w", padx=5, pady=5)
 
