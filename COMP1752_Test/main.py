@@ -1,23 +1,25 @@
-import customtkinter as ctk
-from view_tracks import TrackViewer
-from create_playlist import CreatePlaylist
-from update_track import UpdateTracks
-import theme_manager as theme
-theme.configure()
+import customtkinter as ctk                     # Import CustomTkinter as ctk
+from view_tracks import TrackViewer             # Import TrackViewer class from view_tracks
+from create_playlist import CreatePlaylist      # Import CreatePlaylist class from create_playlist
+from update_track import UpdateTracks           # Import UpdateTracks class from update_track
+import theme_manager as theme                   # Import theme manager as theme
 
-window = ctk.CTk()
-window.title("Jukebox")
-window.geometry("800x410")
+theme.configure() # Apply the theme and appearance
 
-notebook = ctk.CTkTabview(window)
-notebook.pack(expand=True, fill="both")
+window = ctk.CTk()          # Create the main app window
+window.title("Jukebox")     # Set the window title
+window.geometry("800x410")  # Set the window size
 
-tab1 = notebook.add("View Tracks")
-tab2 = notebook.add("Create Playlist")
-tab3 = notebook.add("Update Tracks")
+tab = ctk.CTkTabview(window)            # Create a tab view container
+tab.pack(expand=True, fill="both")      # Expand to fill the window
 
-TrackViewer(tab1)
-CreatePlaylist(tab2)
-UpdateTracks(tab3)
+# Create three tabs and assign each one to a different feature
+tab1 = tab.add("View Tracks")           # Tab for viewing all tracks
+tab2 = tab.add("Create Playlist")       # Tab for making a custom playlist
+tab3 = tab.add("Update Tracks")         # Tab for updating a track's rating
 
-window.mainloop()
+TrackViewer(tab1)       # Place the TrackViewer UI inside the first tab
+CreatePlaylist(tab2)    # Place the CreatePlayList UI inside the second tab
+UpdateTracks(tab3)      # Place the UpdateTracks UI inside the third tab
+
+window.mainloop()   # Starts and keeps the app running
