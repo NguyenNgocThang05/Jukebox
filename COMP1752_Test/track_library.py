@@ -116,9 +116,9 @@ def read_library():
             except ValueError:
                 play_count = 0 # Default play count to 0 if invalid
 
-            fixed_trackID = "%02d" % trackID     # Formatting track ID as two digit string (e.g, 01, 02)
-            library[fixed_trackID] = LibraryItem(details[0], details[1], rating)
-            library[fixed_trackID].play_count = play_count  # Set play count
+            formatted_trackID = "%02d" % trackID     # Formatting track ID as two digit string (e.g, 01, 02)
+            library[formatted_trackID] = LibraryItem(details[0], details[1], rating)
+            library[formatted_trackID].play_count = play_count  # Set play count
             trackID += 1    # Increment track ID for the next item
 
         return library # Return the library dictionary

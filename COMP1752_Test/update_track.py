@@ -53,18 +53,18 @@ class UpdateTracks:
 
     def show_track_info(self):
         # Shows the track name when Find button is clicked
-
         key = self.input_txt.get().strip() # Get the track number input and remove white spaces
+
+        self.track_display.configure(state="normal")  # Enables textbox for writing
+        self.track_display.delete("1.0", ctk.END)  # Clear any previous text
         if not key:
             self.status_lbl.configure(text="Please enter a track number")   # Informs the user if the input is empty
-            return
-
-        self.track_display.configure(state="normal")    # Enables textbox for writing
-        self.track_display.delete("1.0", ctk.END)       # Clear any previous text
-
-        name = lib.get_name(key)    # Get the name of the track by ID
-        display_text = f"{key}: {name}" if name else f"Track {key} not found"  # Assign a display text
-        self.track_display.insert("1.0", display_text) # Show the result
+        else:
+            name = lib.get_name(key)  # Get the name of the track by ID
+            if name: # If the track exists
+                self.track_display.insert("1.0", f"{key}: {name}") # Get track
+            else:
+                self.status_lbl.configure(text=f"Track {key} not found") # Prints a message if the track does not exist
 
         self.track_display.configure(state="disabled") # Disable editing
 

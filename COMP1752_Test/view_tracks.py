@@ -65,7 +65,7 @@ class TrackViewer:
                 # Display all info in the track detail text box
                 self.track_txt.insert("1.0", f"{name}\n{artist}\nRating: {rating}\nPlays: {play_count}")
             else:
-                self.track_txt.insert("1.0", f"Track {key} not found")  # If key is invalid
+                self.status_lbl.configure(text=f"Track {key} not found") # If key is invalid
 
         self.track_txt.configure(state="disabled") # Disable text box to prevent the user from editing
 

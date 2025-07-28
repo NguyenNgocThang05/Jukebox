@@ -22,4 +22,4 @@ TrackViewer(tab1)       # Place the TrackViewer UI inside the first tab
 CreatePlaylist(tab2)    # Place the CreatePlayList UI inside the second tab
 UpdateTracks(tab3)      # Place the UpdateTracks UI inside the third tab
 
-window.mainloop()   # Starts and keeps the app running
+window.mainloop()   # Starts the app and keeps the app running
