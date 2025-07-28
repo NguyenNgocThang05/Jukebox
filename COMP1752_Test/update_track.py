@@ -63,6 +63,7 @@ class UpdateTracks:
             name = lib.get_name(key)  # Get the name of the track by ID
             if name: # If the track exists
                 self.track_display.insert("1.0", f"{key}: {name}") # Get track
+                self.status_lbl.configure(text="Find button was clicked!")
             else:
                 self.status_lbl.configure(text=f"Track {key} not found") # Prints a message if the track does not exist
 
@@ -85,8 +86,8 @@ class UpdateTracks:
             new_rating = int(self.selected_option.get()) # Get selected rating as integer
             lib.set_rating(key, new_rating) # Update the track's rating
             lib.update_library() # Save changes to CSV
-            self.status_lbl.configure(text=f"Updated {name} to {new_rating} stars") # Shows success message
             self.show_track_info()  # Refresh the display info after a new input
+            self.status_lbl.configure(text=f"Updated {name} to {new_rating} stars") # Shows success message
         except ValueError:
             self.status_lbl.configure(text="Invalid rating value") # If the rating isn't a valid number
 
