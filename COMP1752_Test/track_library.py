@@ -90,8 +90,8 @@ def update_library():
                 library[key].play_count     # Write play count to CSV
             ])
 
+# Read the library from a CSV file
 def read_library():
-    # Read the library from a CSV file
     global library  # Declare the global variable library
     library = {}  # Initialize empty dictionary
 

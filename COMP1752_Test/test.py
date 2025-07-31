@@ -1,28 +1,23 @@
 from library_item import LibraryItem
 import track_library as lib
 
-
 def test_library_item_info_and_stars():
     item = LibraryItem("Test Song", "Test Artist", rating=4)
     assert item.info() == "Test Song - Test Artist ****"
     assert item.stars() == "****"
 
-
 def test_get_name_found():
     name = lib.get_name("01")
     assert isinstance(name, str)
-
 
 def test_get_name_not_found():
     name = lib.get_name("99")  # Assuming 99 doesn't exist
     assert name is None
 
-
 def test_set_rating_and_get_rating():
     key = "01"
     lib.set_rating(key, 3)
     assert lib.get_rating(key) == 3
-
 
 def test_increment_play_count():
     key = "01"
@@ -45,8 +40,6 @@ def test_library_item_zero_stars():
 def test_library_item_max_stars():
     item = LibraryItem("Perfect", "Artist", 5)
     assert item.stars() == "*****"
-
-# --- Tests for track_library getters/setters ---
 
 def test_get_artist_found():
     key = "01"
