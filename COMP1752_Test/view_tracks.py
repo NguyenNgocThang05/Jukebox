@@ -38,7 +38,7 @@ class TrackViewer:
         self.list_txt.grid(row=1, column=0, columnspan=3, sticky="w", padx=5, pady=5)
 
         # Text box for showing details of a specific track
-        self.track_txt = ctk.CTkTextbox(self.parent, width=240, height=100, state="disabled")
+        self.track_txt = ctk.CTkTextbox(self.parent, width=210, height=100, state="disabled")
         self.track_txt.grid(row=1, column=3, sticky="nw", padx=5, pady=5)
 
         # Status label
@@ -73,8 +73,8 @@ class TrackViewer:
         # This method is triggered when List all tracks is clicked
         self.status_lbl.configure(text="List track was clicked!")   # Update status message
         self.list_txt.configure(state="normal")     # Enable the list text box
-        track_list = lib.list_all()     # Get the full list of tracks from the library
-        self.list_txt.delete("1.0", ctk.END)    # Clear any existing text
+        track_list = lib.list_all()                 # Get the full list of tracks from the library
+        self.list_txt.delete("1.0", ctk.END)        # Clear any existing text
         self.list_txt.insert("1.0", track_list)     # Insert the updated track list
         self.list_txt.configure(state="disabled")   # Disable it to prevent the user from editing
 

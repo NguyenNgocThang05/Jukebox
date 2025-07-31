@@ -1,27 +1,19 @@
 class LibraryItem:
-    """
-    # Defines a class named LibraryItem,
-     which serves as a blueprint for creating objects
-     showing as items in a library
-    """
-    def __init__(self, name, artist, rating=0): # Constructor method. Calls automatically when a new LibraryItem object is created
-        self.name = name # Initialize an instance variable "name" with the value passed in the "name" parameter
-        self.artist = artist # Initialize an instance variable "artist" with the value passed in the "artist" parameter
-        self.rating = rating # Initialize an instance variable "rating" with the value passed in the "rating" parameter or its default
-        self.play_count = 0 # Initialize an instance variable "play_count" to 0. This variable will show how many times the track has been played
+    # This class represents a music library item with name, artist, rating and play count
+    def __init__(self, name, artist, rating=0):
+        # Constructor method to initialize the object
+        self.name = name        # Store the name of the item
+        self.artist = artist    # Store the artist's name
+        self.rating = rating    # Store the rating
+        self.play_count = 0     # Initialize play count to 0
 
     def info(self):
-        """
-        Defines a method named "info" that returns a formatted string containing information about the library item
-        """
-        return f"{self.name} - {self.artist} {self.stars()}" # Uses to create a track's detail string
+        # Returns a formatted string with the name, artist, and star rating
+        return f"{self.name} - {self.artist} {self.stars()}"
 
     def stars(self):
-        """
-        Defines a method named "stars" that generates a string of '*' based on the track's rating.
-        """
-        stars = "" # Initialize an empty string variable named "stars"
-        for i in range(self.rating): # Initialize a for loop that iterates rating's times.
-                                     # Meaning that if the star rating is 3, the loop will run 3 times.
-            stars += "*" # In each iteration, a '*' is appended to the "stars" string
-        return stars # Returns the final string of '*'
+        # Convert numeric rating into a visual star format using "*"
+        stars = ""                      # Initialize an empty string to hold stars
+        for i in range(self.rating):    # Repeat loop equal to the rating value
+            stars += "*"                # Add one star for each rating point
+        return stars                    # Return the final star string

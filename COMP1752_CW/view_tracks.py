@@ -1,107 +1,85 @@
-import tkinter as tk
-import tkinter.scrolledtext as tkst
-
-import track_library as lib
-import font_manager as fonts
-
-
-def set_text(text_area, content):
-    """
-    Defines a helper function named "set_text" to update the content of a Tkinter text and scrolled text widget
-    "text_area" is the Tkinter text widget to be updated
-    "content" is the string that will be inserted into the text area
-    """
-    text_area.delete("1.0", tk.END)
-    """
-    Deletes all existing content from the "text_area" widget
-    "1.0" refers to the first character of the first line
-    tk.END refers to the end of the text
-    """
-    text_area.insert(1.0, content)
-    """
-    Inserts the "content" string into the "text_area" widget, starting at "1.0" (beginning)
-    """
+import customtkinter as ctk     # Import the CustomerTkinter as ctk
+import track_library as lib     # Import the track_library as lib
+import theme_manager as theme   # Import the theme_manager as theme
 
 
 class TrackViewer:
-    """
-    Defines a class named "TrackViewer", which creates the GUI elements and logic for view tracks
-    """
+    # Define a class for the GUI components that handles viewing track information
     def __init__(self, parent):
-        """
-        The constructor method for the "TrackViewer" class
-        "self" is an instance of the class being created
-        "parent" is a frame that will contain this viewer
-        """
-        self.tab1_interface(parent)
-        # Calls the "tab1_interface" method, passing the "parent" widget
-        # This method is responsible for creating and laying out the GUI elements
+        self.parent = parent            # Store reference to the parent container (usually the main window)
+        self.input_txt = None           # Placeholder for the track number input field
+        self.list_txt = None            # Placeholder for the text box that lists all tracks
+        self.track_txt = None           # Placeholder for the text box that shows selected track details
+        self.status_lbl = None          # Placeholder for the status label at the bottom
+        self.create_widgets()           # Call method to create all GUI components
+        self.list_tracks_clicked()      # Automatically display the track list when the app starts
 
-    def tab1_interface(self, frame):
-        """
-        Defines a method named "tab1_interface" which sets up the user interface elements within a given "frame"
-        "frame" is the Tkinter widget (Ex: Tk.Frame) where the widgets will be placed
-        """
+    def create_widgets(self):
+        # This method creates and arranges all the widgets in the GUI
 
-        # List All Tracks button
-        list_tracks_btn = tk.Button(frame, text="List All Tracks",bg="#888888", fg="white", command=self.list_tracks_clicked)
-        list_tracks_btn.grid(row=0, column=0, padx=10, pady=10)
+        # List Tracks button
+        list_btn = ctk.CTkButton(self.parent, text="List All Tracks", command=self.list_tracks_clicked, corner_radius=10)
+        list_btn.grid(row=0, column=0, padx=5, pady=5)
 
-        # Enter Track Number label
-        enter_lbl = tk.Label(frame, text="Enter Track Number",bg="#888888", fg="white")
-        enter_lbl.grid(row=0, column=1, padx=10, pady=10)
+        # Track number label
+        track_label = ctk.CTkLabel(self.parent, text="Enter track number:")
+        track_label.grid(row=0, column=1, padx=5, pady=5)
 
-        # User Entry Field
-        self.input_txt = tk.Entry(frame, width=3)
-        self.input_txt.grid(row=0, column=2, padx=10, pady=10)
+        # Track number entry
+        self.input_txt = ctk.CTkEntry(self.parent, width=60)
+        self.input_txt.grid(row=0, column=2, padx=5, pady=5)
 
         # View Track button
-        view_track_btn = tk.Button(frame, text="View Track",bg="#888888", fg="white", command=self.view_tracks_clicked)
-        view_track_btn.grid(row=0, column=3, padx=10, pady=10)
+        view_btn = ctk.CTkButton(self.parent, text="View Track", command=self.view_tracks_clicked, corner_radius=10)
+        view_btn.grid(row=0, column=3, padx=5, pady=5)
 
-        # Scrolled Text widget under List All Tracks button
-        self.list_txt = tkst.ScrolledText(frame,bg="#888888", fg="white", width=48, height=12, wrap="none")
-        self.list_txt.grid(row=1, column=0, columnspan=3, sticky="W", padx=10, pady=10)
+        # Main content: text box for listing all tracks
+        self.list_txt = ctk.CTkTextbox(self.parent, width=480, height=240, state="disabled")
+        self.list_txt.grid(row=1, column=0, columnspan=3, sticky="w", padx=5, pady=5)
 
-        # Text widget under View Track button
-        self.track_txt = tk.Text(frame,bg="#888888", fg="white", width=24, height=4, wrap="none")
-        self.track_txt.grid(row=1, column=3, sticky="NW", padx=10, pady=10)
+        # Text box for showing details of a specific track
+        self.track_txt = ctk.CTkTextbox(self.parent, width=240, height=100, state="disabled")
+        self.track_txt.grid(row=1, column=3, sticky="nw", padx=5, pady=5)
 
         # Status label
-        self.status_lbl = tk.Label(frame, text="", bg="#444444", fg="white")
-        self.status_lbl.grid(row=2, column=0, columnspan=4, sticky="W", padx=10, pady=10)
-
+        self.status_lbl = ctk.CTkLabel(self.parent, text="")
+        self.status_lbl.grid(row=2, column=0, columnspan=4, sticky="w", padx=5, pady=5)
 
     def view_tracks_clicked(self):
-        """
-        Defines a method that is called when the "View Track" button is clicked
-        """
-        key = self.input_txt.get().strip() # Retrieves the text entered from the user
-        name = lib.get_name(key) # Calls the "get_name" function to get the track's name using entered key
-        if name is not None:
-            # Checks if a track with the given key was found
-            artist = lib.get_artist(key) # Retrieves the artist of the track
-            rating = lib.get_rating(key) # Retrieves the rating of the track
-            play_count = lib.get_play_count(key) # Retrieves the play count of the track
-            track_details = f"{name}\n{artist}\nrating: {rating}\nplays: {play_count}" # Formats the retrieved track details into a string
-            set_text(self.track_txt, track_details) # Calls the "set_text" function to display the track details in the text widget
-            self.status_lbl.configure(text="View Track button was clicked!") # Updates the status label to notify the user
+        # This method is triggered when the view track button is clicked
+
+        self.status_lbl.configure(text="View Tracks was clicked!")  # Update the status message
+        key = self.input_txt.get().strip()  # Get the entered track number and remove white spaces
+
+        self.track_txt.configure(state="normal")    # Enable text box for writing
+        self.track_txt.delete("1.0", ctk.END)   # Clear previous content
+
+        if not key:
+            self.status_lbl.configure(text="Please enter a track number")   # Prompt if input is empty
         else:
-            # If name is None (track not found)
-            self.status_lbl.configure(text="Track not found")
-            # Updates the status label to notify the user
+            name = lib.get_name(key)    # Fetch track name by key
+            if name:    # If the track exists
+                artist = lib.get_artist(key)            # Get artist name
+                rating = lib.get_rating(key)            # Get rating
+                play_count = lib.get_play_count(key)    # Get play count
+                # Display all info in the track detail text box
+                self.track_txt.insert("1.0", f"{name}\n{artist}\nRating: {rating}\nPlays: {play_count}")
+            else:
+                self.status_lbl.configure(text=f"Track {key} not found") # If key is invalid
+
+        self.track_txt.configure(state="disabled") # Disable text box to prevent the user from editing
 
     def list_tracks_clicked(self):
-        """
-        Defines a method that is called when  the "List All Tracks" button is clicked
-        """
-
-        track_list = lib.list_all() # Calls the "list_all" function from the track_library to get all tracks
-        set_text(self.list_txt, track_list) # Calls the "set_text" function to display the "track_list" in the scrolled text widget
-        self.status_lbl.configure(text="List Tracks button was clicked!") # Updates the status label
+        # This method is triggered when List all tracks is clicked
+        self.status_lbl.configure(text="List track was clicked!")   # Update status message
+        self.list_txt.configure(state="normal")     # Enable the list text box
+        track_list = lib.list_all()                 # Get the full list of tracks from the library
+        self.list_txt.delete("1.0", ctk.END)        # Clear any existing text
+        self.list_txt.insert("1.0", track_list)     # Insert the updated track list
+        self.list_txt.configure(state="disabled")   # Disable it to prevent the user from editing
 
 if __name__ == "__main__":  # only runs when this file is run as a standalone
-    window = tk.Tk()        # create a TK object
-    fonts.configure()       # configure the fonts
+    window = ctk.CTk()        # create the main app window
+    theme.configure()       # Apply the theme
     TrackViewer(window)     # open the TrackViewer GUI
-    window.mainloop()       # run the window main loop, reacting to button presses, etc
+    window.mainloop()       # run the window main loop

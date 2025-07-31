@@ -1,23 +1,27 @@
-import customtkinter as ctk     # Import the customer tkinter as ctk
-import  track_library as lib    # import the track_library as lib
-import theme_manager as theme   # Import the theme_manager as theme
+import customtkinter as ctk
+import track_library as lib
+import theme_manager as theme
 
 
 class CreatePlaylist:
-    # Defines the GUI class for creating and managing a playlist
     def __init__(self, parent):
-        self.parent = parent        # Store reference to the parent container (usually the window)
-        self.playlist = []          # Initialize an empty list to store track keys added to the playlist
-        self.input_txt = None       # Placeholder for the track number input entry
-        self.list_txt = None        # Placeholder for the playlist display textbox
-        self.status_lbl = None      # Placeholder for the status message label
-        self.play_btn = None        # Placeholder for the Play button
-        self.reset_btn = None       # Placeholder for the Reset button
-        self.create_widgets()       # Call method to create and layout all GUI components
+        self.parent = parent
+        self.playlists = {"Main Playlist": []}  # Dictionary to store playlists
+        self.current_playlist = "Main Playlist"
+
+        # Widget variables
+        self.input_txt = None
+        self.list_txt = None
+        self.status_lbl = None
+        self.play_btn = None
+        self.reset_btn = None
+        self.playlist_var = None
+        self.playlist_menu = None
+
+        self.create_widgets()
+        self.update_track_list_display()
 
     def create_widgets(self):
-        # Creates and positions all widgets
-
         # Track number label
         track_label = ctk.CTkLabel(self.parent, text="Enter track number:")
         track_label.grid(row=0, column=0, padx=5, pady=5)
@@ -27,83 +31,109 @@ class CreatePlaylist:
         self.input_txt.grid(row=0, column=1, padx=5, pady=5)
 
         # Add button
-        add_btn = ctk.CTkButton(self.parent, text="Add", command=self.create_tracks_clicked, corner_radius=10)
+        add_btn = ctk.CTkButton(self.parent, text="Add", command=self.add_track, corner_radius=10)
         add_btn.grid(row=0, column=2, padx=5, pady=5)
 
-        # Playlist display textbox (read only)
+        # Playlist display textbox
         self.list_txt = ctk.CTkTextbox(self.parent, width=480, height=240, state="disabled")
         self.list_txt.grid(row=1, column=0, columnspan=2, sticky="w", padx=5, pady=5)
 
-        # Frame to group Play and Reset button
+        # Frame to group action buttons
         button_frame = ctk.CTkFrame(self.parent)
         button_frame.grid(row=1, column=2, padx=5, pady=5, sticky="n")
 
         # Play button
-        self.play_btn = ctk.CTkButton(button_frame, text="Play", command=self.play_track_list, corner_radius=10)
-        self.play_btn.pack(pady=5)
+        play_btn = ctk.CTkButton(button_frame, text="Play", command=self.play_playlist, corner_radius=10, fg_color="green")
+        play_btn.pack(pady=5)
 
         # Reset button
-        self.reset_btn = ctk.CTkButton(button_frame, text="Reset", command=self.reset_playlist, corner_radius=10)
-        self.reset_btn.pack(pady=5)
+        reset_btn = ctk.CTkButton(button_frame, text="Reset", command=self.reset_playlist, corner_radius=10, fg_color="red")
+        reset_btn.pack(pady=5)
+
+        # Create new playlist button
+        new_btn = ctk.CTkButton(button_frame, text="New Playlist", command=self.create_new_playlist, corner_radius=10)
+        new_btn.pack(pady=5)
+
+        # Dropdown menu for playlists
+        self.playlist_var = ctk.StringVar(value=self.current_playlist)
+        self.playlist_menu = ctk.CTkOptionMenu(button_frame, variable=self.playlist_var, values=list(self.playlists.keys()), command=self.select_playlist,corner_radius=10)
+        self.playlist_menu.pack(pady=5)
 
         # Status label
         self.status_lbl = ctk.CTkLabel(self.parent, text="")
         self.status_lbl.grid(row=2, column=0, columnspan=4, sticky="w", padx=5, pady=5)
 
-    def create_tracks_clicked(self):
-        # This method is called when the Add button is clicked
+    def add_track(self):
+        key = self.input_txt.get().strip()
+        name = lib.get_name(key)
+        playlist = self.playlists[self.current_playlist]
 
-        key = self.input_txt.get().strip()  # Get the input and remove white spaces from the entry field
         if key:
-            if lib.get_name(key) is not None:   # Check if the track exists
-                self.playlist.append(key)           # Add track key to the playlist
-                self.update_track_list_display()    # Refresh the display
-                self.input_txt.delete(0, ctk.END)   # Clear the input field
-                self.status_lbl.configure(text=f"Track {key} added to playlist") # Shows success message
+            if name is not None:
+                playlist.append(key)
+                self.update_track_list_display()
+                self.input_txt.delete(0, ctk.END)
+                self.status_lbl.configure(text=f"Track {key} added to {self.current_playlist}")
             else:
-                self.status_lbl.configure(text=f"Error: Track {key} not found in library")  # Error if track doesn't exist
+                self.status_lbl.configure(text=f"Error: Track {key} not found")
         else:
-            self.status_lbl.configure(text="Please enter a track number")   # Prompt if no input
+            self.status_lbl.configure(text="Please enter a track number")
 
     def update_track_list_display(self):
-        # Updates the text box to display all tracks currently in the playlist
+        self.list_txt.configure(state="normal")
+        self.list_txt.delete("1.0", ctk.END)
+        playlist = self.playlists[self.current_playlist]
 
-        self.list_txt.configure(state="normal") # Enable text box for writing
-        self.list_txt.delete("1.0", ctk.END)    # Clear previous content
-        if not self.playlist:
-            return  # If playlist is empty, stop here
+        if not playlist:
+            self.list_txt.insert("1.0", "Playlist is empty")
+        else:
+            display_text = f"{self.current_playlist}:\n\n"
+            for i, key in enumerate(playlist, 1):
+                name = lib.get_name(key)
+                display_text += f"{i}. {name} (ID: {key})\n"
+            self.list_txt.insert("1.0", display_text)
 
-        display_text = "Play List:\n" # Header for playlist display
-        for i, key in enumerate(self.playlist):     # Loop through all added track keys
-            name = lib.get_name(key)    # Get track name
-            if name:
-                display_text += f"{i + 1}. {name} | Track ID: {key}\n"    # Add numbered track name to the playlist
-        self.list_txt.insert("1.0", display_text)       # Show the full playlist in the text box
-        self.list_txt.configure(state="disabled")       # Disable the textbox to prevent the user from editing
+        self.list_txt.configure(state="disabled")
 
-    def play_track_list(self):
-        # Simulates playing the playlist and updates play counts
+    def play_playlist(self):
+        playlist = self.playlists[self.current_playlist]
+        if not playlist:
+            self.status_lbl.configure(text="Playlist is empty")
+            return
 
-        if not self.playlist:
-            self.status_lbl.configure(text="Playlist is empty. Add tracks before playing")
-            return  # Exits if no tracks are in the playlist
+        for key in playlist:
+            lib.increment_play_count(key)
 
-        for key in self.playlist:
-            lib.increment_play_count(key)   # Increase play count for each track
-
-        lib.update_library()    # Save the updated play counts to the CSV file
-        self.status_lbl.configure(text="Playlist is now playing")   # Show the success message
+        lib.update_library()
+        self.status_lbl.configure(text=f"Playing {self.current_playlist}")
 
     def reset_playlist(self):
-        # Clears the playlist and updates the display
+        self.playlists[self.current_playlist] = []
+        self.update_track_list_display()
+        self.status_lbl.configure(text=f"{self.current_playlist} has been reset")
 
-        self.playlist = [] # Clear the list of track keys
-        self.update_track_list_display() # Clear the display box
-        self.status_lbl.configure(text="Playlist has been reset") # Informs the user
+    def select_playlist(self, choice):
+        self.current_playlist = choice
+        self.update_track_list_display()
+        self.status_lbl.configure(text=f"Selected playlist: {choice}")
+
+    def create_new_playlist(self):
+        dialog = ctk.CTkInputDialog(text="Enter new playlist name:", title="Create Playlist")
+        playlist_name = dialog.get_input()
+
+        if playlist_name and playlist_name not in self.playlists:
+            self.playlists[playlist_name] = []
+            self.current_playlist = playlist_name
+            self.playlist_menu.configure(values=list(self.playlists.keys()))
+            self.playlist_var.set(playlist_name)
+            self.update_track_list_display()
+            self.status_lbl.configure(text=f"Created new playlist: {playlist_name}")
+        elif playlist_name in self.playlists:
+            self.status_lbl.configure(text="Playlist name already exists!")
+
 
 if __name__ == "__main__":
     window = ctk.CTk()
     theme.configure()
     CreatePlaylist(window)
     window.mainloop()
-

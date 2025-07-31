@@ -8,7 +8,7 @@ theme.configure() # Apply the theme and appearance
 
 window = ctk.CTk()          # Create the main app window
 window.title("Jukebox")     # Set the window title
-window.geometry("800x410")  # Set the window size
+window.geometry("730x410")  # Set the window size
 
 tab = ctk.CTkTabview(window)            # Create a tab view container
 tab.pack(expand=True, fill="both")      # Expand to fill the window

@@ -7,49 +7,72 @@ class UpdateTracks:
     # Defines a GUI class for updating the ratings for tracks
     def __init__(self, parent):
         self.parent = parent            # Reference to the parent container (usually the main window)
+        self.list_txt = None
         self.input_txt = None           # Entry widget for track number
         self.track_display = None       # Textbox to display found track name
         self.selected_option = None     # Variable to store selected rating
         self.status_lbl = None          # Label to display status message
         self.create_widgets()           # Create and layout all widgets
+        self.list_track()
 
     def create_widgets(self):
         # Creates and positions all widgets
 
-        # Track number input label
-        track_label = ctk.CTkLabel(self.parent, text="Enter track number:")
-        track_label.grid(row=0, column=0, padx=5, pady=5)
+        # Main textbox (left side - 70% width)
+        self.list_txt = ctk.CTkTextbox(self.parent, width=400, height=300, state="disabled")
+        self.list_txt.grid(row=0, column=0, rowspan=5, padx=(10, 5), pady=10, sticky="nsew")
 
-        # Track number input entry field
-        self.input_txt = ctk.CTkEntry(self.parent, width=50)
-        self.input_txt.grid(row=0, column=1, padx=5, pady=5)
+        # Right side controls (30% width) - no frames used
+        ctk.CTkLabel(self.parent, text="Track ID:").grid(row=0, column=1, padx=5, pady=3, sticky="e")
+        self.input_txt = ctk.CTkEntry(self.parent, width=80)
+        self.input_txt.grid(row=0, column=2, padx=5, pady=3, sticky="w")
 
-        # Find button to search for the track
-        find_btn = ctk.CTkButton(self.parent, text="Find", command=self.show_track_info, width=60, corner_radius=5)
-        find_btn.grid(row=0, column=2, padx=5, pady=5)
+        find_btn = ctk.CTkButton(self.parent, text="Find", width=60, command=self.show_track_info)
+        find_btn.grid(row=0, column=3, padx=(0, 10), pady=3)
 
-        # Display box to show track name
-        self.track_display = ctk.CTkTextbox(self.parent, width=200, height=50, corner_radius=5, state="disabled")
-        self.track_display.grid(row=1, column=0, columnspan=2, padx=5, pady=5, sticky="w")
+        # Track display (compact)
+        self.track_display = ctk.CTkTextbox(self.parent, height=40, width=180, state="disabled")
+        self.track_display.grid(row=1, column=1, columnspan=3, padx=10, pady=3, sticky="ew")
 
-        # Update button to apply the new rating
-        update_btn = ctk.CTkButton(self.parent, text="Update", command=self.update_track_clicked, width=80, corner_radius=5)
-        update_btn.grid(row=1, column=2, padx=5, pady=5)
+        # Rating controls
+        rating_lbl = ctk.CTkLabel(self.parent, text="New rating:")
+        rating_lbl.grid(row=2, column=1, padx=5, pady=3, sticky="e")
 
-        # Rating selection label
-        rating_label = ctk.CTkLabel(self.parent, text="New Rating:")
-        rating_label.grid(row=2, column=0, padx=5, pady=5)
+        # Frame to hold the radio buttons tightly together
+        rating_frame = ctk.CTkFrame(self.parent, fg_color="transparent")
+        rating_frame.grid(row=2, column=2, columnspan=3, padx=5, pady=(2, 8), sticky="w")
 
-        # Create a variable to store selected rating (default is 1)
+        # Rating variable and radio buttons
         self.selected_option = ctk.StringVar(value="1")
-        # Create 5 radio buttons for selecting a rating from 1 to 5
-        for i in range(5):
-            ctk.CTkRadioButton(self.parent, text=str(i + 1), variable=self.selected_option, value=str(i + 1)).grid(
-                row=2, column=i + 1, padx=2, pady=5)
 
-        # Status label
+        for i in range(5):
+            ctk.CTkRadioButton(
+                rating_frame,
+                text=str(i + 1),
+                variable=self.selected_option,
+                value=str(i + 1),
+                width=20
+            ).pack(side="left", padx=4, pady=2)
+
+        # Update button
+        update_btn = ctk.CTkButton(self.parent,
+                                   text="Update",
+                                   width=20,
+                                   fg_color="green",
+                                   command=self.update_track_clicked)
+        update_btn.grid(row=3, column=1, columnspan=3, padx=10, pady=5, sticky="ew")
+
+        # Status label at bottom
         self.status_lbl = ctk.CTkLabel(self.parent, text="", height=20)
-        self.status_lbl.grid(row=3, column=0, columnspan=6, sticky="w", padx=5, pady=5)
+        self.status_lbl.grid(row=5, column=0, padx=20, sticky="w")
+
+    def list_track(self):
+        # This method display all the tracks in the library
+        self.list_txt.configure(state="normal")
+        track_list = lib.list_all()
+        self.list_txt.delete("1.0", ctk.END)
+        self.list_txt.insert("1.0", track_list)
+        self.list_txt.configure(state="disabled")
 
     def show_track_info(self):
         # Shows the track name when Find button is clicked
@@ -87,6 +110,7 @@ class UpdateTracks:
             lib.set_rating(key, new_rating) # Update the track's rating
             lib.update_library() # Save changes to CSV
             self.show_track_info()  # Refresh the display info after a new input
+            self.list_track()
             self.status_lbl.configure(text=f"Updated {name} to {new_rating} stars") # Shows success message
         except ValueError:
             self.status_lbl.configure(text="Invalid rating value") # If the rating isn't a valid number
