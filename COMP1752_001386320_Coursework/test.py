@@ -106,7 +106,6 @@ def test_update_and_restore_rating():
     lib.set_rating(key, 4)
     lib.update_library()  # Save changes to file
     lib.read_library()    # Reload from file
-    # Rating may revert depending on file I/O, so either original or 4 is acceptable
     assert lib.get_rating(key) == 4 or lib.get_rating(key) == original
 
 # Sanity check: ensure key details are correct for first 3 tracks
